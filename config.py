@@ -1,0 +1,11 @@
+BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+YELLOW = (255, 255, 0)
+WHITE = (255, 255, 255)
+
+WIDTH = 400
+HEIGHT = 600
+
+CAR_W = 50
+CAR_H = 100
