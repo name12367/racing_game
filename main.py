@@ -1,4 +1,6 @@
 import math
+import time
+
 from player import Player
 from car_bot import *
 from white_line import *
@@ -51,6 +53,10 @@ while running:
         line_last_spawn_time = pygame.time.get_ticks()
         all_sprites.add(WhiteLinePart(WHITE, speedy=background_speed, layer=1))
 
+    # Check collisions
+    hits = pygame.sprite.spritecollide(car_player, cars, False)
+    if hits:
+        time.sleep(0.1)
 
     all_sprites.update()
     cars.update()
