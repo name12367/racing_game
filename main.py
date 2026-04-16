@@ -34,7 +34,16 @@ while running:
 
     # Calculations
     if math.fabs(pygame.time.get_ticks() - car_last_spawn_time) >= car_spawn_times:
-        cars.add(CarBot(random.choice([YELLOW, GREEN]), random.randint(4, 7), layer=2))
+        cars.add(
+            CarBot(
+                random.choice([YELLOW, GREEN]),
+                random.randint(
+                    background_speed - 3,
+                    background_speed - 1
+                ),
+                layer=2
+            )
+        )
         car_last_spawn_time = pygame.time.get_ticks()
         car_spawn_times = random.choice([1500, 2000, 1750, 1000])
 
