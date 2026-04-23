@@ -26,6 +26,7 @@ all_sprites.add(bg2, layer=0)
 clock = pygame.time.Clock()
 car_last_spawn_time = 0
 line_last_spawn_time = 0
+player_collision_time = 0
 car_spawn_times = random.choice((1500, 2000, 2500, 1000))
 running = True
 while running:
@@ -55,11 +56,22 @@ while running:
 
     # Check collisions
     hits = pygame.sprite.spritecollide(car_player, cars, False)
+    time_delay = math.fabs(pygame.time.get_ticks() - player_collision_time) >= 3000
     if hits:
+        if time_delay:
+            car_player.unset_collided()
+
         if not car_player.is_collided():
+            player_collision_time = pygame.time.get_ticks()
             car_player.decrease_lives()
+
+            #if car_player.is_dead():
+              #  pass
+
             car_player.set_collided()
-            print(car_player.lives) # nen
+            print(car_player.lives)  # nen
+
+
 
     all_sprites.update()
     cars.update()
