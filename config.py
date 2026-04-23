@@ -9,3 +9,5 @@ HEIGHT = 600
 
 CAR_W = 50
 CAR_H = 100
+
+PLAYER_LIVES = 3

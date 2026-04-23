@@ -56,18 +56,21 @@ while running:
     # Check collisions
     hits = pygame.sprite.spritecollide(car_player, cars, False)
     if hits:
-        time.sleep(0.1)
+        if not car_player.is_collided():
+            car_player.decrease_lives()
+            car_player.set_collided()
+            print(car_player.lives) # nen
 
     all_sprites.update()
     cars.update()
 
     if bg1.is_in_centre():
         bg2.rect.y = -HEIGHT
-        print("background 1 moved")
+
 
     if bg2.is_in_centre():
         bg1.rect.y = -HEIGHT
-        print("background 2 moved")
+
 
     for car in cars:
         if car.is_on_the_edge():
