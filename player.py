@@ -13,6 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.layer = layer
         self.lives = PLAYER_LIVES
         self.collided = False
+        self.dead = False
 
     def update(self):
         self.speedx = 0
@@ -32,12 +33,20 @@ class Player(pygame.sprite.Sprite):
     def decrease_lives(self):
         if self.lives >= 1:
             self.lives -= 1
+        if self.lives == 0:
+            self.dead = True
 
     def set_collided(self):
         self.collided = True
+
+    def resurrect(self):
+        self.dead = False
 
     def unset_collided(self):
         self.collided = False
 
     def is_collided(self):
         return self.collided
+
+    def is_dead(self):
+        return self.dead
