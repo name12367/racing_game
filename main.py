@@ -28,6 +28,7 @@ line_last_spawn_time = 0
 player_collision_time = 0
 car_spawn_times = random.choice((1500, 2000, 2500, 1000))
 running = True
+state = "start_screen"
 
 def draw_text(screen, text, size, color, x, y):
     font = pygame.font.Font(None, size)
@@ -53,13 +54,9 @@ def restart_the_game():
     for i in all_sprites:
         i.restart()
 
-while running:
-    # Input
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-    # Calculations
+# LEVEL 1
+def lvl_1():
+    global car_last_spawn_time, car_spawn_times, line_last_spawn_time, player_collision_time
     if math.fabs(pygame.time.get_ticks() - car_last_spawn_time) >= car_spawn_times:
         cars.add(
             CarBot(
@@ -78,7 +75,7 @@ while running:
         line_last_spawn_time = pygame.time.get_ticks()
         all_sprites.add(WhiteLinePart(WHITE, speedy=background_speed, layer=1))
 
-    # Check collisions
+        # Check collisions
     hits = pygame.sprite.spritecollide(car_player, cars, False)
     time_delay = math.fabs(pygame.time.get_ticks() - player_collision_time) >= 3000
     if hits:
@@ -90,12 +87,10 @@ while running:
             car_player.decrease_lives()
 
             if car_player.is_dead():
-               restart_the_game()
+                restart_the_game()
 
             car_player.set_collided()
             print(car_player.lives)  # nen
-
-
 
     all_sprites.update()
     cars.update()
@@ -103,10 +98,8 @@ while running:
     if bg1.is_in_centre():
         bg2.rect.y = -HEIGHT
 
-
     if bg2.is_in_centre():
         bg1.rect.y = -HEIGHT
-
 
     for car in cars:
         if car.is_on_the_edge():
@@ -117,8 +110,27 @@ while running:
     all_sprites.draw(screen)
     cars.draw(screen)
     draw_text(screen, f"{car_player.lives} lives", 50, RED, 20, 20)
-    pygame.display.flip()
+    pygame.display.update()
 
+# START SCREEN
+def start_screen():
+    screen.fill(BLACK)
+    pygame.display.update()
+
+while running:
+    # Input
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                state = 'level_1'
+
+    # Calculations
+    if state == 'start_screen':
+        start_screen()
+    elif state == 'level_1':
+        lvl_1()
 
     clock.tick(60)
 
