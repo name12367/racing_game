@@ -15,6 +15,8 @@ class CarBot(pygame.sprite.Sprite):
         self.speedx = 0
         self.speedy = speedy
         self.layer = layer
+        self.lives = PLAYER_LIVES
+        self.last_spawn_time = 0
 
     def update(self):
         self.rect.y += self.speedy
@@ -23,3 +25,6 @@ class CarBot(pygame.sprite.Sprite):
         if CAR_H + HEIGHT <= self.rect.y:
             return True
         return False
+
+    def restart(self):
+        self.speedy = 5

@@ -18,3 +18,6 @@ class Background(pygame.sprite.Sprite):
         if HEIGHT + 5 <= self.rect.bottom and self.rect.bottom <= HEIGHT + 5:
             return True
         return False
+
+    def restart(self):
+        pass

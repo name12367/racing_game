@@ -50,3 +50,7 @@ class Player(pygame.sprite.Sprite):
 
     def is_dead(self):
         return self.dead
+
+    def restart(self):
+        self.speedx = 0
+        self.lives = PLAYER_LIVES

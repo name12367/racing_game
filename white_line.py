@@ -19,3 +19,7 @@ class WhiteLinePart(pygame.sprite.Sprite):
         if HEIGHT <= self.rect.top:
             return True
         return False
+
+    def restart(self):
+        self.speedy = 5
+        self.rect.bottom = 0

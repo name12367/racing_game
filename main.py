@@ -22,13 +22,37 @@ all_sprites.add(car_player)
 all_sprites.add(bg1, layer=0)
 all_sprites.add(bg2, layer=0)
 
-
 clock = pygame.time.Clock()
 car_last_spawn_time = 0
 line_last_spawn_time = 0
 player_collision_time = 0
 car_spawn_times = random.choice((1500, 2000, 2500, 1000))
 running = True
+
+def draw_text(screen, text, size, color, x, y):
+    font = pygame.font.Font(None, size)
+    text_surface = font.render(text, True, color)
+    text_rect = text_surface.get_rect()
+    text_rect.topleft = (x, y)
+    screen.blit(text_surface, text_rect)
+
+def restart_the_game():
+    global bg1, bg2, car_last_spawn_time, line_last_spawn_time, player_collision_time, background_speed
+    bg1.rect.y = 5
+    bg2.rect.y = -HEIGHT
+    background_speed = 5
+    line_last_spawn_time = 0
+
+    car_last_spawn_time = 0
+    for car in cars:
+        cars.remove(car)
+
+    player_collision_time = 0
+    car_player.resurrect()
+    car_player.restart()
+    for i in all_sprites:
+        i.restart()
+
 while running:
     # Input
     for event in pygame.event.get():
@@ -65,8 +89,8 @@ while running:
             player_collision_time = pygame.time.get_ticks()
             car_player.decrease_lives()
 
-            #if car_player.is_dead():
-              #  pass
+            if car_player.is_dead():
+               restart_the_game()
 
             car_player.set_collided()
             print(car_player.lives)  # nen
@@ -92,7 +116,9 @@ while running:
     screen.fill(BLACK)
     all_sprites.draw(screen)
     cars.draw(screen)
+    draw_text(screen, f"{car_player.lives} lives", 50, RED, 20, 20)
     pygame.display.flip()
+
 
     clock.tick(60)
 
