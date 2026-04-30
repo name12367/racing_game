@@ -1,6 +1,8 @@
 import math
 import time
 
+import pygame
+
 from player import Player
 from car_bot import *
 from white_line import *
@@ -115,6 +117,7 @@ def lvl_1():
 # START SCREEN
 def start_screen():
     screen.fill(BLACK)
+    draw_text(screen, "press space to race", 40, WHITE, 75, 200)
     pygame.display.update()
 
 while running:
@@ -125,7 +128,8 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 state = 'level_1'
-
+            if event.key == pygame.K_r:
+                restart_the_game()
     # Calculations
     if state == 'start_screen':
         start_screen()
