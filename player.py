@@ -1,4 +1,5 @@
 import pygame
+import math
 from config import *
 
 class Player(pygame.sprite.Sprite):
@@ -14,6 +15,10 @@ class Player(pygame.sprite.Sprite):
         self.lives = PLAYER_LIVES
         self.collided = False
         self.dead = False
+        self.player_collision_time = 0
+
+    def delay_is_out(self):
+        return math.fabs(pygame.time.get_ticks() - self.player_collision_time) >= 3000
 
     def update(self):
         self.speedx = 0
