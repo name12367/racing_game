@@ -25,19 +25,19 @@ all_sprites.add(bg2, layer=0)
 
 clock = pygame.time.Clock()
 times = {}
+car_spawn_times = random.choice([1500, 2000, 1750, 1000])
 car_last_spawn_time = 0
 line_last_spawn_time = 0
 player_collision_time = 0
 running = True
 state = "start_screen"
 
-def wait_for(time, time_key_name):
+def delay(time, time_key_name):
     if not time_key_name in times:
-        times[str(time_key_name)] = time
+        times[str(time_key_name)] = pygame.time.get_ticks()
 
     if math.fabs(pygame.time.get_ticks() - times[time_key_name]) >= time:
         times[time_key_name] = pygame.time.get_ticks()
-        print(times[time_key_name])
         return True
     return False
 
@@ -50,13 +50,12 @@ def draw_text(screen, text, size, color, x, y):
     screen.blit(text_surface, text_rect)
 
 def restart_the_game():
-    global bg1, bg2, car_last_spawn_time, line_last_spawn_time, background_speed
+    global bg1, bg2, times, background_speed
     bg1.rect.y = 5
     bg2.rect.y = -HEIGHT
     background_speed = 5
-    line_last_spawn_time = 0
+    times = {}
 
-    car_last_spawn_time = 0
     for car in cars:
         cars.remove(car)
 
@@ -67,12 +66,7 @@ def restart_the_game():
 
 # LEVEL 1
 def lvl_1():
-    global car_last_spawn_time, line_last_spawn_time
-    if wait_for(1000, "time_testing1"):
-        print(1)
-    if wait_for(2000, "time_testing2"):
-        print(2)
-    if math.fabs(pygame.time.get_ticks() - car_last_spawn_time) >= random.choice([1500, 2000, 1750, 1000]):
+    if delay(random.choice([1500, 2000, 1750, 1000]), "car_last_spawn_time"):
         cars.add(
             CarBot(
                 random.choice([YELLOW, GREEN]),
@@ -83,21 +77,16 @@ def lvl_1():
                 layer=2
             )
         )
-        car_last_spawn_time = pygame.time.get_ticks()
-
-    if math.fabs(pygame.time.get_ticks() - line_last_spawn_time) >= 500:
-        line_last_spawn_time = pygame.time.get_ticks()
+    if delay(500, "line_last_spawn_time"):
         all_sprites.add(WhiteLinePart(WHITE, speedy=background_speed, layer=1))
 
         # Check collisions
     hits = pygame.sprite.spritecollide(car_player, cars, False)
-    time_delay = math.fabs(pygame.time.get_ticks() - car_player.player_collision_time) >= 3000
     if hits:
-        if time_delay:
+        if delay(2000, "player_collision_time"):
             car_player.unset_collided()
 
         if not car_player.is_collided():
-            car_player.set_collision_time(pygame.time.get_ticks())
             car_player.decrease_lives()
 
             if car_player.is_dead():
