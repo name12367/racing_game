@@ -24,15 +24,23 @@ all_sprites.add(bg1, layer=0)
 all_sprites.add(bg2, layer=0)
 
 clock = pygame.time.Clock()
-times = {"one": 1, "two": 2}
+times = {}
 car_last_spawn_time = 0
 line_last_spawn_time = 0
 player_collision_time = 0
 running = True
 state = "start_screen"
 
-def save_key(time_value, time_key_name):
-    times[time_key_name] = time_value
+def wait_for(time, time_key_name):
+    if not time_key_name in times:
+        times[str(time_key_name)] = time
+
+    if math.fabs(pygame.time.get_ticks() - times[time_key_name]) >= time:
+        times[time_key_name] = pygame.time.get_ticks()
+        print(times[time_key_name])
+        return True
+    return False
+
 
 def draw_text(screen, text, size, color, x, y):
     font = pygame.font.Font(None, size)
@@ -60,6 +68,10 @@ def restart_the_game():
 # LEVEL 1
 def lvl_1():
     global car_last_spawn_time, line_last_spawn_time
+    if wait_for(1000, "time_testing1"):
+        print(1)
+    if wait_for(2000, "time_testing2"):
+        print(2)
     if math.fabs(pygame.time.get_ticks() - car_last_spawn_time) >= random.choice([1500, 2000, 1750, 1000]):
         cars.add(
             CarBot(
