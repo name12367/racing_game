@@ -17,20 +17,16 @@ cars = pygame.sprite.Group()
 background_speed = 5
 bg1 = Background(y=5, speedy=background_speed)
 bg2 = Background(y=-HEIGHT, speedy=background_speed)
-car_player = Player(RED, (CAR_W, CAR_H), layer=3)
+clock = pygame.time.Clock()
+times = {}
+running = True
+state = "start_screen"
 
+
+car_player = Player(RED, (CAR_W, CAR_H), layer=3)
 all_sprites.add(car_player)
 all_sprites.add(bg1, layer=0)
 all_sprites.add(bg2, layer=0)
-
-clock = pygame.time.Clock()
-times = {}
-car_spawn_times = random.choice([1500, 2000, 1750, 1000])
-car_last_spawn_time = 0
-line_last_spawn_time = 0
-player_collision_time = 0
-running = True
-state = "start_screen"
 
 def delay(time, time_key_name):
     if not time_key_name in times:
@@ -112,7 +108,9 @@ def lvl_1():
     screen.fill(BLACK)
     all_sprites.draw(screen)
     cars.draw(screen)
-    draw_text(screen, f"{car_player.lives} lives", 50, RED, 20, 20)
+    draw_text(screen, f"{car_player.lives} lives", 36, RED, 20, 20)
+    fuel = round(car_player.fuel, 1)
+    draw_text(screen, f"Fuel: {fuel}", 36, RED, 150, 20)
     pygame.display.update()
 
 # START SCREEN
