@@ -59,3 +59,7 @@ class Player(pygame.sprite.Sprite):
     def restart(self):
         self.speedx = 0
         self.lives = PLAYER_LIVES
+        self.player_collision_time = 0
+
+    def set_collision_time(self, time):
+        self.player_collision_time = time
