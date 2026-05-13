@@ -17,13 +17,20 @@ class Player(pygame.sprite.Sprite):
         self.dead = False
         self.player_collision_time = 0
         self.fuel = 100
+        self.score = 0
 
     def delay_is_out(self):
         return math.fabs(pygame.time.get_ticks() - self.player_collision_time) >= 3000
 
     def update(self):
         self.speedx = 0
-        self.fuel -= 0.05
+        self.score += 5
+
+        if not self.fuel <= 0:
+            self.fuel -= 0.05
+        else:
+            self.fuel = 0
+            self.dead = True
 
         keystate = pygame.key.get_pressed()
         if self.rect.x >= WIDTH - CAR_W - 5:
@@ -62,6 +69,11 @@ class Player(pygame.sprite.Sprite):
         self.speedx = 0
         self.lives = PLAYER_LIVES
         self.player_collision_time = 0
+        self.fuel = 100
+        self.score = 0
 
     def set_collision_time(self, time):
         self.player_collision_time = time
+
+    def refill(self):
+        self.fuel = 100
